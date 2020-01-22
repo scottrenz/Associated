@@ -6,8 +6,6 @@ from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy import inspect
 from sqlalchemy import insert
-# import pprint
-# from pprint import pprint as print
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -114,8 +112,6 @@ def index():
             sysarr = []
             for name in sysnames:
                 sysarr.append(name.sysName)
-            print(emparr)
-            print(sysarr)
             arr = []
             for i in range(0,max(len(emparr),len(sysarr))):
                 arr.append({"empName": "", "sysName": ""})
@@ -123,7 +119,6 @@ def index():
                 arr[i]["empName"] = emparr[i]
             for i in range(0,len(sysarr)):
                 arr[i]["sysName"] = sysarr[i]
-            print(arr)    
             names = arr
             return render_template('index.html', tasks=tasks,trans=trans,names=names)
 
@@ -135,7 +130,7 @@ def update():
         sysName = request.form['sysName']
         empKey = None
         sysKey = None
-        if True:
+        try:
             con = engine.connect()
             statement0 = "select empKey from Employee where empName ='"+empName+"'"
             trans = con.execute(statement0)
@@ -157,7 +152,7 @@ def update():
             trans = con.execute(statement3)
             db.session.commit()
             return redirect('/')
-        # except:
+        except:
             return 'There was an issue associating the names'
             
     else:
@@ -168,7 +163,7 @@ def emp():
     if request.method == 'POST':
         empName = request.form['empName']
         empKey = None
-        if True:
+        try:
             con = engine.connect()
             statement0 = "select empKey from Employee where empName ='"+empName+"'"
             trans = con.execute(statement0)
@@ -184,7 +179,7 @@ def emp():
             trans = con.execute(statement3)
             db.session.commit()
             return redirect('/')
-        # except:
+        except:
             return 'There was an issue creating Employee name'
             
     else:
@@ -195,7 +190,7 @@ def sys():
     if request.method == 'POST':
         sysName = request.form['sysName']
         sysKey = None
-        if True:
+        try:
             con = engine.connect()
             statement0 = "select sysKey from Systems where sysName ='"+sysName+"'"
             trans = con.execute(statement0)
@@ -211,7 +206,7 @@ def sys():
             trans = con.execute(statement3)
             db.session.commit()
             return redirect('/')
-        # except:
+        except:
             return 'There was an issue creating Systems name'
             
     else:
