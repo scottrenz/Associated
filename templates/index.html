@@ -1,37 +1,54 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Task Master</title>
+<title>Employee Systems Associated</title>
 {% endblock %}
 
 {% block body %}
 <div class="content">
-    <h1 style="text-align: center">Task Master</h1>
+    <h1 style="text-align: center">Employee Systems Associate and Deassociate</h1>
     {% if tasks|length < 1 %}
-    <h4 style="text-align: center">There are no tasks. Create one below!"</h4>
+    <h4 style="text-align: center">Enter</h4>
     {% else %}
     <table style="margin-left: 20%">
         <tr>
-            <th>Task</th>
-            <th>Added</th>
+            <th>ID</th>
+            <th>Employee</th>
+            <th>Systems</th>
             <th>Actions</th>
         </tr>
         {% for task in tasks %}        
             <tr>
-                <td>{{ task.content}}</td>
-                <td>{{ task.date_created.date() }}</td>
+                <td>{{ task.id}}</td>
+                <td>{{ task.empName}}</td>
+                <td>{{ task.sysName}}</td>
                 <td>
-                    <a href="/delete/{{task.id}}">Delete</a>
-                    <br>
-                    <a href="/update/{{task.id}}">Update</a>
+                    <a href="/update/">Associate</a>
                 </td>
             </tr>
         {% endfor %}
     </table>
+    <table style="margin-left: 20%">
+        <tr>
+            <th>ID</th> <th>Employee</th> <th>Systems</th>
+        </tr>
+
+        {% for tran in trans %}        
+            <tr>
+                <td>{{tran.id}}</td> <td>{{tran.empName}}</td> <td>{{tran.sysName}}</td>
+                <td>
+                    <a href="/delete/{{tran.id}}">Deassociate</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
     {% endif %}
+    {% if tasks|length < 1 %}
     <form style="margin-left: 20%" action="/" method="POST">
         <input type="text" name="content" id="content">
-        <input type="submit" value="Add Task">
+        <input type="submit" value="Enter name">
     </form>
+    {% endif %}
 </div>
 {% endblock %}
