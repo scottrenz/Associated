@@ -6,6 +6,8 @@ from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy import inspect
 from sqlalchemy import insert
+# import pprint
+# from pprint import pprint as print
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -101,8 +103,29 @@ def index():
             con = engine.connect()
             statement = "select * from empsys order by 3,2"
             trans = con.execute(statement)
+            statement = "select * from Employee where empKey not in (select empKey from Associated)"
+            empnames = con.execute(statement)
+            statement = "select * from Systems where sysKey not in (select sysKey from Associated)"
+            sysnames = con.execute(statement)
             # con.close()
-            return render_template('index.html', tasks=tasks,trans=trans)
+            emparr = []
+            for name in empnames:
+                emparr.append(name.empName)
+            sysarr = []
+            for name in sysnames:
+                sysarr.append(name.sysName)
+            print(emparr)
+            print(sysarr)
+            arr = []
+            for i in range(0,max(len(emparr),len(sysarr))):
+                arr.append({"empName": "", "sysName": ""})
+            for i in range(0,len(emparr)):
+                arr[i]["empName"] = emparr[i]
+            for i in range(0,len(sysarr)):
+                arr[i]["sysName"] = sysarr[i]
+            print(arr)    
+            names = arr
+            return render_template('index.html', tasks=tasks,trans=trans,names=names)
 
 
 @app.route('/update/', methods=['GET','POST'])
@@ -139,6 +162,60 @@ def update():
             
     else:
         return render_template('update.html')
+
+@app.route('/emp/', methods=['GET','POST'])
+def emp():
+    if request.method == 'POST':
+        empName = request.form['empName']
+        empKey = None
+        if True:
+            con = engine.connect()
+            statement0 = "select empKey from Employee where empName ='"+empName+"'"
+            trans = con.execute(statement0)
+            for tran in trans:
+                empKey = str(tran.empKey)
+            if empKey is not None:
+                return "Employee name already exists"
+
+            statement2 = "insert into Employee select seq,'"+empName+"' from sqlite_sequence where name ='Employee'"
+            trans = con.execute(statement2)
+            db.session.commit()
+            statement3 = "update sqlite_sequence set seq = seq + 1 where name = 'Employee'"
+            trans = con.execute(statement3)
+            db.session.commit()
+            return redirect('/')
+        # except:
+            return 'There was an issue creating Employee name'
+            
+    else:
+        return render_template('emp.html')
+
+@app.route('/sys/', methods=['GET','POST'])
+def sys():
+    if request.method == 'POST':
+        sysName = request.form['sysName']
+        sysKey = None
+        if True:
+            con = engine.connect()
+            statement0 = "select sysKey from Systems where sysName ='"+sysName+"'"
+            trans = con.execute(statement0)
+            for tran in trans:
+                sysKey = str(tran.sysKey)
+            if sysKey is not None:
+                return "System name already exists"
+
+            statement2 = "insert into Systems select seq,'"+sysName+"' from sqlite_sequence where name ='Systems'"
+            trans = con.execute(statement2)
+            db.session.commit()
+            statement3 = "update sqlite_sequence set seq = seq + 1 where name = 'Systems'"
+            trans = con.execute(statement3)
+            db.session.commit()
+            return redirect('/')
+        # except:
+            return 'There was an issue creating Systems name'
+            
+    else:
+        return render_template('sys.html')
 
 
 if __name__ == '__main__':

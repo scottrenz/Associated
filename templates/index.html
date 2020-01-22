@@ -20,8 +20,12 @@
         {% for task in tasks %}        
             <tr>
                 <td>{{ task.id}}</td>
-                <td>{{ task.empName}}</td>
-                <td>{{ task.sysName}}</td>
+                <td>
+                        <a href="/emp/">Addemployee</a>
+                    </td>
+                    <td>
+                            <a href="/sys/">Addsystem</a>
+                        </td>
                 <td>
                     <a href="/update/">Associate</a>
                 </td>
@@ -38,6 +42,16 @@
                 <td>{{tran.id}}</td> <td>{{tran.empName}}</td> <td>{{tran.sysName}}</td>
                 <td>
                     <a href="/delete/{{tran.id}}">Deassociate</a>
+                </td>
+            </tr>
+        {% endfor %}
+            <tr>
+                <td></td> <td>Unassociated</td> <td>Names</td>
+            </tr>
+        {% for name in names %}        
+            <tr>
+                <td></td> <td>{{name.empName}}</td> <td>{{name.sysName}}</td>
+                <td>
                 </td>
             </tr>
         {% endfor %}
