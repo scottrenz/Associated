@@ -4,6 +4,8 @@ pip3 install virtualenv
 virtualenv env
 source env/bin/activate
 pip3 install flask flask-sqlalchemy
+pip freeze > requirements.txt
+
 pip3 install -U textblob
 python3  -m textblob.download_corpora lite
 # if "unable to import flask" then:

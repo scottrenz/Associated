@@ -161,7 +161,11 @@ def update():
 @app.route('/emp/', methods=['GET','POST'])
 def emp():
     if request.method == 'POST':
-        empName = request.form['empName']
+        empName = request.form['empName'].strip()
+        if empName is None:
+                return "Employee name must not be blank"
+        if empName == "":
+                return "Employee name must not be blank"
         empKey = None
         try:
             con = engine.connect()
@@ -188,7 +192,11 @@ def emp():
 @app.route('/sys/', methods=['GET','POST'])
 def sys():
     if request.method == 'POST':
-        sysName = request.form['sysName']
+        sysName = request.form['sysName'].strip()
+        if sysName is None:
+                return "System name must not be blank"
+        if sysName == "":
+                return "System name must not be blank"
         sysKey = None
         try:
             con = engine.connect()
