@@ -63,7 +63,7 @@ def index():
     else:
             tasks = Blanknames.query.order_by(Blanknames.id).all()
             con = engine.connect()
-            statement = "select * from empsys order by 3,2"
+            statement = "select * from Associated as a left join Employee as e on a.empKey = e.empKey left join Systems as s on a.sysKey = s.sysKey order by 3,2"
             trans = con.execute(statement)
             statement = "select * from Employee where empKey not in (select empKey from Associated)"
             empnames = con.execute(statement)
