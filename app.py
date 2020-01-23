@@ -62,7 +62,7 @@ def deassociate(id):
         db.session.commit()
         return redirect('/')
     except:
-        return 'There was a problem deleting that task'    
+        return 'There was a problem deassociating'    
 
 # @app.route('/', methods=['POST', 'GET'])
 @app.route('/', methods=['POST', 'GET'])
@@ -150,7 +150,7 @@ def associate():
             if sysKey is None:
                 return 'System name not found'
 
-            statement2 = "insert into Associated select seq,'"+empKey+"','"+sysKey+"' from sqlite_sequence where name ='Associated' and not exists ( select 1 from Associated where empKey = '"+empKey+"' and sysKey = '"+sysKey+"')"
+            statement2 = "insert into Associated select ifnull(max(id),0)+1,'"+empKey+"','"+sysKey+"' from Associated where not exists ( select 1 from Associated where empKey = '"+empKey+"' and sysKey = '"+sysKey+"')"
             trans = con.execute(statement2)
             db.session.commit()
             statement3 = "update sqlite_sequence set seq = seq + 1 where name = 'Associated'"
@@ -183,7 +183,7 @@ def addemployee():
             if empKey is not None:
                 return "Employee name already exists"
 
-            statement2 = "insert into Employee select seq,'"+empName+"' from sqlite_sequence where name ='Employee'"
+            statement2 = "insert into Employee select ifnull(max(empKey),0)+1,'"+empName+"' from Employee"
             trans = con.execute(statement2)
             db.session.commit()
             statement3 = "update sqlite_sequence set seq = seq + 1 where name = 'Employee'"
@@ -216,7 +216,7 @@ def addsystem():
             if sysKey is not None:
                 return "System name already exists"
 
-            statement2 = "insert into Systems select seq,'"+sysName+"' from sqlite_sequence where name ='Systems'"
+            statement2 = "insert into Systems select ifnull(max(sysKey),0)+1,'"+sysName+"' from Systems"
             trans = con.execute(statement2)
             db.session.commit()
             statement3 = "update sqlite_sequence set seq = seq + 1 where name = 'Systems'"
