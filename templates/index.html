@@ -21,13 +21,13 @@
             <tr>
                 <td>{{ task.id}}</td>
                 <td>
-                        <a href="/emp/">Addemployee</a>
+                        <a href="/addemployee/">Addemployee</a>
                     </td>
                     <td>
-                            <a href="/sys/">Addsystem</a>
+                            <a href="/addsystem/">Addsystem</a>
                         </td>
                 <td>
-                    <a href="/update/">Associate</a>
+                    <a href="/associate/">Associate</a>
                 </td>
             </tr>
         {% endfor %}
@@ -41,7 +41,7 @@
             <tr>
                 <td>{{tran.id}}</td> <td>{{tran.empName}}</td> <td>{{tran.sysName}}</td>
                 <td>
-                    <a href="/delete/{{tran.id}}">Deassociate</a>
+                    <a href="/deassociate/{{tran.id}}">Deassociate</a>
                 </td>
             </tr>
         {% endfor %}
@@ -58,11 +58,11 @@
     </table>
 
     {% endif %}
-    {% if tasks|length < 1 %}
+    <!-- {% if tasks|length < 1 %}
     <form style="margin-left: 20%" action="/" method="POST">
         <input type="text" name="content" id="content">
         <input type="submit" value="Enter name">
     </form>
-    {% endif %}
+    {% endif %} -->
 </div>
 {% endblock %}
