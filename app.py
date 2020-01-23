@@ -124,9 +124,9 @@ def associate():
 @app.route('/addemployee/', methods=['GET','POST'])
 def addemployee():
     if request.method == 'POST':
-        empName = request.form['empName'].strip()
-        if empName is None:
+        if request.form['empName'] is None:
                 return "Employee name must not be blank"
+        empName = request.form['empName'].strip()
         if empName == "":
                 return "Employee name must not be blank"
         empKey = None
@@ -155,9 +155,9 @@ def addemployee():
 @app.route('/addsystem/', methods=['GET','POST'])
 def addsystem():
     if request.method == 'POST':
-        sysName = request.form['sysName'].strip()
-        if sysName is None:
+        if request.form['sysName'] is None:
                 return "System name must not be blank"
+        sysName = request.form['sysName'].strip()
         if sysName == "":
                 return "System name must not be blank"
         sysKey = None
