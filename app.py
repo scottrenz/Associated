@@ -36,12 +36,6 @@ class Associated(db.Model):
     empKey = db.Column(db.Integer)
     sysKey = db.Column(db.Integer)
 
-# class Empsysnames(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     empName = db.Column(db.String(200), default='.')
-#     sysName = db.Column(db.String(200), default='.')
-#     date_created = db.Column(db.DateTime, default=datetime.utcnow)
-
 class Blanknames(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     empName = db.Column(db.String(200), default='.')
@@ -51,8 +45,6 @@ class Blanknames(db.Model):
     def __repr__(self):
         return '<Task %r>' % self.id
 
-# @app.route('/delete/<int:id>')
-# def delete(id):
 @app.route('/deassociate/<int:id>')
 def deassociate(id):
     task_to_delete = Associated.query.get_or_404(id)
@@ -64,40 +56,9 @@ def deassociate(id):
     except:
         return 'There was a problem deassociating'    
 
-# @app.route('/', methods=['POST', 'GET'])
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':
-        # emp_content = request.form['empName']
-        # if emp_content is not None:
-        #     new_task1 = Employee(empName=emp_content)
-        #     try:
-        #         db.session.add(new_task1)
-        #         db.session.commit()
-        #         return redirect('/')
-        #     except:
-        #         return 'There was an issue adding your Employee'
-        # sys_content = request.form['sysName']
-        # if sys_content is not None:
-        #     new_task2 = Systems(sysName=sys_content)
-        #     try:
-        #         db.session.add(new_task2)
-        #         db.session.commit()
-        #         return redirect('/')
-        #     except:
-        #         return 'There was an issue adding your System'    
-        # a_sys_content = request.form['AsysName']
-        # d_sys_content = request.form['DsysName']
-        # a_emp_content = request.form['DsysName']
-        # d_emp_content = request.form['DsysName']
-        # if a_sys_content is not None and a_emp_content is not None:
-        #     con = engine.connect() 
-        #     statement = "INSERT INTO Associated(empKey, sysKey) select empKey, sysKey from Employee, Systems where empName ='" + emp_content + "' and sysName ='" + sys_content + "'"
-        #     con.execute(statement)
-        # if d_sys_content is not None and d_emp_content is not None:
-        #     con = engine.connect()
-        #     statement = "delete from Associated where id in (select id from company.empsys where empName ='" + d_emp_content + "' and sysName ='" + d_sys_content + "')"
-        #     con.execute(statement)
         pass
     else:
             tasks = Blanknames.query.order_by(Blanknames.id).all()
@@ -108,7 +69,6 @@ def index():
             empnames = con.execute(statement)
             statement = "select * from Systems where sysKey not in (select sysKey from Associated)"
             sysnames = con.execute(statement)
-            # con.close()
             emparr = []
             for name in empnames:
                 emparr.append(name.empName)
@@ -126,8 +86,6 @@ def index():
             return render_template('index.html', tasks=tasks,trans=trans,names=names)
 
 
-# @app.route('/update/', methods=['GET','POST'])
-# def update():
 @app.route('/associate/', methods=['GET','POST'])
 def associate():
     if request.method == 'POST':
@@ -163,8 +121,6 @@ def associate():
     else:
         return render_template('associate.html')
 
-# @app.route('/emp/', methods=['GET','POST'])
-# def emp():
 @app.route('/addemployee/', methods=['GET','POST'])
 def addemployee():
     if request.method == 'POST':
@@ -196,8 +152,6 @@ def addemployee():
     else:
         return render_template('addemployee.html')
 
-# @app.route('/sys/', methods=['GET','POST'])
-# def sys():
 @app.route('/addsystem/', methods=['GET','POST'])
 def addsystem():
     if request.method == 'POST':
