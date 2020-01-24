@@ -45,12 +45,17 @@
                 </td>
             </tr>
         {% endfor %}
-            <tr>
+            {% if names|length > 0 %}
+        <tr>
                 <td></td> <td>Unassociated</td> <td>Names</td>
+                <td></td> <td>Click</td> <td>Name</td>
+                <td></td> <td>to</td> <td>remove</td>
             </tr>
-        {% for name in names %}        
+            {% endif %}
+            {% for name in names %}        
             <tr>
-                <td></td> <td>{{name.empName}}</td> <td>{{name.sysName}}</td>
+                
+                <td></td> <td><a href="/delemp/{{name.empKey}}">{{name.empName}}</a></td> <td><a href="/delsys/{{name.sysKey}}">{{name.sysName}}</a></td>
                 <td>
                 </td>
             </tr>

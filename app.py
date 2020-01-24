@@ -56,6 +56,28 @@ def deassociate(id):
     except:
         return 'There was a problem deassociating'    
 
+@app.route('/delemp/<int:id>')
+def delemp(id):
+    task_to_delete = Employee.query.get_or_404(id)
+
+    try:
+        db.session.delete(task_to_delete)
+        db.session.commit()
+        return redirect('/')
+    except:
+        return 'There was a problem removing Employee'    
+
+@app.route('/delsys/<int:id>')
+def delsys(id):
+    task_to_delete = Systems.query.get_or_404(id)
+
+    try:
+        db.session.delete(task_to_delete)
+        db.session.commit()
+        return redirect('/')
+    except:
+        return 'There was a problem removing Systems'    
+
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':
@@ -71,17 +93,19 @@ def index():
             sysnames = con.execute(statement)
             emparr = []
             for name in empnames:
-                emparr.append(name.empName)
+                emparr.append((name.empName,name.empKey))
             sysarr = []
             for name in sysnames:
-                sysarr.append(name.sysName)
+                sysarr.append((name.sysName,name.sysKey))
             arr = []
             for i in range(0,max(len(emparr),len(sysarr))):
-                arr.append({"empName": "", "sysName": ""})
+                arr.append({"empName": "","empKey": "", "sysName": "", "sysKey": ""})
             for i in range(0,len(emparr)):
-                arr[i]["empName"] = emparr[i]
+                arr[i]["empName"] = emparr[i][0]
+                arr[i]["empKey"] = emparr[i][1]
             for i in range(0,len(sysarr)):
-                arr[i]["sysName"] = sysarr[i]
+                arr[i]["sysName"] = sysarr[i][0]
+                arr[i]["sysKey"] = sysarr[i][1]
             names = arr
             return render_template('index.html', tasks=tasks,trans=trans,names=names)
 
